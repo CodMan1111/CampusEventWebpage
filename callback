@@ -35,11 +35,13 @@
 
       try {
         const tokenUrl = 'https://us-east-1cim3gy31f.auth.us-east-1.amazoncognito.com/oauth2/token';
+        const callbackUri = window.location.origin + window.location.pathname;
         const body = new URLSearchParams({
           grant_type: 'authorization_code',
           client_id: '3d2fpudvqi7l7k338dddjm159l',
+          client_secret: 'mjia1mlogtp6082spn26cs4ioqj2kae2vgak3suu4bv96vu574g',
           code: code,
-          redirect_uri: 'http://localhost:3000/callback'
+          redirect_uri: callbackUri
         });
 
         const r = await fetch(tokenUrl, {
@@ -52,8 +54,8 @@
         if (!r.ok) throw new Error(data.error_description || data.error || JSON.stringify(data));
 
         localStorage.setItem('cognitoTokens', JSON.stringify(data));
-        statusEl.textContent = 'Signed in — redirecting to events...';
-        setTimeout(()=>{ window.location.href = '/showEvents.html'; }, 600);
+        statusEl.textContent = 'Signed in — redirecting...';
+        setTimeout(()=>{ window.location.href = '/'; }, 600);
 
       } catch (e) {
         statusEl.textContent = 'Token exchange failed';
